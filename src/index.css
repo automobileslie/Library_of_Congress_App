@@ -11,3 +11,137 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.nav-bar-wrapper {
+  display: flex;
+  justify-content: center; 
+}
+
+.nav-bar-items {
+  text-align: center;
+  border-color: black;
+  border-width: 5px;
+  border-style: solid;
+}
+
+.nav-bar-items:hover {
+  cursor: pointer;
+}
+
+.app-container {
+  padding: 5%;  
+}
+
+#home-page-intro {
+  padding-right: 8%;
+  padding-left: 8%;
+  padding-top: 4%;
+}
+
+.inner-app-wrapper{
+  padding: 5%;
+}
+
+.show-page-header {
+  text-align: center
+}
+
+.show-page-image {
+  text-align: center;
+}
+
+.show-page-description {
+  text-align: left;
+}
+
+.show-page-link {
+  text-align: left;
+  padding-bottom: 1%;
+}
+
+.show-page-link a {
+  text-decoration: none;
+  color: black;
+}
+
+.show-page-link a:hover {
+  color: #2a52be;
+}
+
+.show-page-link a:active {
+  color: grey;
+}
+
+.show-page-container {
+  text-align: center;
+}
+
+#show-page-go-home-btn-container {
+  text-align: left;
+  margin: 0%;
+  cursor: pointer;
+}
+
+.navigation-button {
+  cursor: pointer;
+}
+
+.navigation-button:hover {
+  color: #2a52be;
+}
+
+.arrow {
+  border: solid black;
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  padding: 3px;
+}
+
+.arrow-container {
+  padding: 1%;
+}
+
+.arrow-container:hover {
+  cursor: pointer;
+}
+
+.right {
+  transform: rotate(-45deg);
+  -webkit-transform: rotate(-45deg);
+}
+
+.left {
+  transform: rotate(135deg);
+  -webkit-transform: rotate(135deg);
+}
+
+.page-count-wrapper {
+  padding: 1%
+}
+
+.pagination-bar-container {
+  text-align: center;
+  border-top: black 2px solid;
+  padding: 1%;
+}
+
+.collection-list-container {
+  padding-bottom: 2%;
+}
+
+.collection-items:hover {
+  cursor: pointer;
+  color: #2a52be;
+}
+
+.collection-items:active {
+  color: grey;
+}
+
+.loading-collections-message {
+  text-align: center;
+}
+
+.home-page-image-container{
+  text-align: center;
+}

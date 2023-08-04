@@ -4,6 +4,8 @@ import axios from 'axios';
 import { useState } from 'react';
 import CollectionList from './CollectionList.js'
 import ShowPage from './ShowPage.js'
+import Home from './Home.js'
+import NavigationBar from './NavigationBar.js'
 
 export default function App() {
 
@@ -17,6 +19,7 @@ export default function App() {
   const [pageLimit, setPageLimit] = useState(null)
   const [currentShowPage, setCurrentShowPage] = useState(null)
   const [loadingCollections, setLoadingCollections] = useState(true)
+  const [showCollectionsPage, setShowCollectionsPage] = useState(false)
 
   useEffect(() => {
     // fetching collections data from the Library of Congress API
@@ -69,41 +72,65 @@ export default function App() {
     } 
   }
 
-  function handleGoToShowPage(collection) {
-    setCurrentShowPage(collection)
-  }
+    function handleGoToShowPage(collection) {
+      setCurrentShowPage(collection)
+      setShowCollectionsPage(false)
+    }
 
-  function handleBackToHomePage() {
-    setCurrentShowPage(null)
-  }
+    function handleBackToHomePageFromShow(page) {
+      setShowCollectionsPage(true)
+      setCurrentShowPage(null)
+      setCurrentPage(page)
+      setDisplayResultsNumber(40 * page)
+    }
 
-  function goToFirstSetOfCollections() {
-    setDisplayResultsNumber(40)
-    setCurrentPage(1)
-  }
+    function handleBackToHomePageFromCollection() {
+      setCurrentShowPage(null)
+      setShowCollectionsPage(false)
+    }
 
-  function goToLastSetOfCollections() {
-    setDisplayResultsNumber(Math.ceil(results.length))
-    setCurrentPage(pageLimit)
-  }
+    function goToFirstSetOfCollections() {
+      setDisplayResultsNumber(40)
+      setCurrentPage(1)
+      setShowCollectionsPage(true)
+    }
+
+    function goToLastSetOfCollections() {
+      setDisplayResultsNumber(Math.ceil(results.length))
+      setCurrentPage(pageLimit)
+    }
+
+    function whichPageToRender() {
+      if (showCollectionsPage) {
+          return <CollectionList results={results} 
+          resultsToDisplay={resultsToDisplay}
+          totalNumberOfResults={totalNumberOfResults} 
+          pageLimit={pageLimit}
+          handleNextButtonClick={handleNextButtonClick} 
+          handleBackButtonClick={handleBackButtonClick} 
+          loadedAllPages={loadedAllPages} 
+          currentPage={currentPage}
+          handleGoToShowPage={handleGoToShowPage}
+          loadingCollections={loadingCollections}
+          goToFirstSetOfCollections={goToFirstSetOfCollections}
+          goToLastSetOfCollections={goToLastSetOfCollections}
+        />
+        }
+        else if (currentShowPage) {
+          return <ShowPage currentPage={currentPage} collection={currentShowPage} handleBackToHomePageFromShow={handleBackToHomePageFromShow}/>
+        }
+        else {
+        return  <Home />
+        }
+      }
 
   return (
-      !currentShowPage ?
-      <CollectionList results={results} 
-        resultsToDisplay={resultsToDisplay}
-        totalNumberOfResults={totalNumberOfResults} 
-        pageLimit={pageLimit}
-        handleNextButtonClick={handleNextButtonClick} 
-        handleBackButtonClick={handleBackButtonClick} 
-        loadedAllPages={loadedAllPages} 
-        currentPage={currentPage}
-        handleGoToShowPage={handleGoToShowPage}
-        loadingCollections={loadingCollections}
-        goToFirstSetOfCollections={goToFirstSetOfCollections}
-        goToLastSetOfCollections={goToLastSetOfCollections}
-      />
-      :
-      <ShowPage collection={currentShowPage} handleBackToHomePage={handleBackToHomePage}/>
-  );
+     <div className="app-container">
+      <NavigationBar goToFirstSetOfCollections={goToFirstSetOfCollections} handleBackToHomePageFromCollection={handleBackToHomePageFromCollection}/>
+      <div className="inner-app-wrapper">
+        {whichPageToRender()}
+      </div>
+     </div>
+  )
 }
 

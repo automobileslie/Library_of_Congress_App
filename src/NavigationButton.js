@@ -1,5 +1,5 @@
 export default function NavigationButton(props) {
     return ( 
-        <span onClick={props.clickHandler}>{props.buttonText} </span>
+        <span class="navigation-button" onClick={props.clickHandler}>{props.buttonText} </span>
     )
 }
