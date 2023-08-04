@@ -10,7 +10,9 @@ export default function CollectionList(props) {
     return(
         <div>
             { collectionList() }
-            <NavigationButton handleNextPageLoad={props.handleNextPageLoad} atEndOfPages={props.atEndOfPages}/>
+            <NavigationButton clickHandler={props.handleNextPageLoad} loadedAllPages={props.loadedAllPages} buttonText="Next"/>
+            <span>{props.currentPage}</span>
+            <NavigationButton clickHandler={props.handleBackButtonClick} loadedAllPages={props.loadedAllPages} buttonText="Back"/>
         </div>
 
     )
