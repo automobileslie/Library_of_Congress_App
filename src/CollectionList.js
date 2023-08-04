@@ -2,8 +2,8 @@ import NavigationButton from './NavigationButton.js'
 
 export default function CollectionList(props) {
     function collectionList() {    
-        return props.resultstodisplay.map(result => {
-            return <p>{result.title}</p>
+        return props.resultsToDisplay.map(result => {
+            return <p key={result.title}>{result.title}</p>
         })
     }
 

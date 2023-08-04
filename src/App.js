@@ -7,9 +7,9 @@ import CollectionList from './CollectionList.js'
 export default function App() {
 
   const [results, setResults] = useState([])
-  const [displayresultsnumber, setDisplayresultsnumber] = useState(0)
-  const resultstodisplay = results.slice(displayresultsnumber - 40, displayresultsnumber)
-  const [fullsetofcollectiondata, setFullsetofcollectiondata] = useState(null)
+  const [displayResultsNumber, setDisplayResultsNumber] = useState(0)
+  const resultsToDisplay = results.slice(displayResultsNumber - 40, displayResultsNumber)
+  const [currentFullSetOfCollectionData, setCurrentFullSetOfCollectionData] = useState(null)
   const [atEndOfPages, setAtEndOfPages] = useState(false)
 
   useEffect(() => {
@@ -17,8 +17,8 @@ export default function App() {
     const getCollections = async () => {
       const collectionData = await axios.get('https://www.loc.gov/collections/?fo=json')
       setResults(collectionData.data.results)
-      setDisplayresultsnumber(40)
-      setFullsetofcollectiondata(collectionData["data"])
+      setDisplayResultsNumber(40)
+      setCurrentFullSetOfCollectionData(collectionData["data"])
       setAtEndOfPages(collectionData["data"]["pagination"]["next"] ? false : true)
     }
     getCollections()
@@ -27,20 +27,19 @@ export default function App() {
   function handleNextPageLoad() {
     const getCollections = async () => {
       if (!atEndOfPages) {
-        const collectionData = await axios.get(fullsetofcollectiondata["pagination"]["next"])
+        const collectionData = await axios.get(currentFullSetOfCollectionData["pagination"]["next"])
         setResults([...results, collectionData.data.results].flat())
-        setDisplayresultsnumber(displayresultsnumber + 40)
-        setFullsetofcollectiondata(collectionData["data"])
+        setDisplayResultsNumber(displayResultsNumber + 40)
+        setCurrentFullSetOfCollectionData(collectionData["data"])
         setAtEndOfPages(collectionData["data"]["pagination"]["next"] ? false : true)
       }
     }
-
     getCollections()
 }
 
   return (
     <div>
-      <CollectionList results={results} resultstodisplay={resultstodisplay} handleNextPageLoad={handleNextPageLoad} atEndOfPages={atEndOfPages}/>
+      <CollectionList results={results} resultsToDisplay={resultsToDisplay} handleNextPageLoad={handleNextPageLoad} atEndOfPages={atEndOfPages}/>
     </div>
   );
 }
