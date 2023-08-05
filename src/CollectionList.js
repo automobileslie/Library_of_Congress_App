@@ -1,6 +1,9 @@
 import PaginationBar from './PaginationBar.js'
 
 export default function CollectionList(props) {
+    const finalNumberForListing = props.currentPage * 40
+    const beginningNumberForListing = finalNumberForListing - 39
+
     function collectionList() {    
         return props.resultsToDisplay?.map(result => {
             return <p className="collection-items" onClick={() => props.handleGoToShowPage(result)} key={result.title}>{result.title}</p>
@@ -14,14 +17,16 @@ export default function CollectionList(props) {
         </div>
         : 
         <div>
+            <h2>List of Collections</h2>
             <div className="collection-list-container">
                 { collectionList() }
+                <span id="items-display-range">(Displaying items {beginningNumberForListing} - {finalNumberForListing})</span>
             </div>
+
             <PaginationBar 
                 goToFirstSetOfCollections={props.goToFirstSetOfCollections} 
                 goToLastSetOfCollections={props.goToLastSetOfCollections}
                 handleBackButtonClick={props.handleBackButtonClick}
-                loadedAllPages={props.loadedAllPages}
                 currentPage={props.currentPage}
                 pageLimit={props.pageLimit}
                 handleNextButtonClick={props.handleNextButtonClick}

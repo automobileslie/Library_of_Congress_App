@@ -12,7 +12,6 @@ export default function App() {
   const [results, setResults] = useState([])
   const [displayResultsNumber, setDisplayResultsNumber] = useState(0)
   const resultsToDisplay = results.slice(displayResultsNumber - 40, displayResultsNumber)
-  const [loadedAllPages, setLoadedAllPages] = useState(false)
   const [totalNumberOfResults, setTotalNumberOfResults] = useState(null)
   const [url, setUrl] = useState('https://www.loc.gov/collections/?fo=json')
   const [currentPage, setCurrentPage] = useState(0)
@@ -23,7 +22,6 @@ export default function App() {
 
   useEffect(() => {
     // fetching collections data from the Library of Congress API
-
     const getCollections = async () => {
       const collectionData = await axios.get('https://www.loc.gov/collections/?fo=json')
       setResults(collectionData.data.results)
@@ -43,18 +41,16 @@ export default function App() {
 
       if (!collectionData["data"]["pagination"]["next"]) {
         // if we have loaded all pages at this point, then store information to indicate that
-        setLoadedAllPages(true)
         setTotalNumberOfResults(results.length)
         setPageLimit(Math.ceil(results.length/40) + 1)
         setLoadingCollections(false)
       }
-     
     }
     if (url) {
       getMoreCollections()
     }
 
-  }, [url])
+  }, [results, url])
 
   function handleNextButtonClick() {
     // Take the user to the next page unless we are on the last page
@@ -96,8 +92,9 @@ export default function App() {
     }
 
     function goToLastSetOfCollections() {
-      setDisplayResultsNumber(Math.ceil(results.length))
+      setDisplayResultsNumber(40 * pageLimit)
       setCurrentPage(pageLimit)
+      setShowCollectionsPage(true)
     }
 
     function whichPageToRender() {
@@ -108,7 +105,6 @@ export default function App() {
           pageLimit={pageLimit}
           handleNextButtonClick={handleNextButtonClick} 
           handleBackButtonClick={handleBackButtonClick} 
-          loadedAllPages={loadedAllPages} 
           currentPage={currentPage}
           handleGoToShowPage={handleGoToShowPage}
           loadingCollections={loadingCollections}
@@ -120,17 +116,19 @@ export default function App() {
           return <ShowPage currentPage={currentPage} collection={currentShowPage} handleBackToHomePageFromShow={handleBackToHomePageFromShow}/>
         }
         else {
-        return  <Home />
+          return <Home />
         }
       }
 
   return (
-     <div className="app-container">
+    <div>
       <NavigationBar goToFirstSetOfCollections={goToFirstSetOfCollections} handleBackToHomePageFromCollection={handleBackToHomePageFromCollection}/>
-      <div className="inner-app-wrapper">
-        {whichPageToRender()}
-      </div>
+      <div className="app-container">
+        <div className="inner-app-wrapper">
+          {whichPageToRender()}
+        </div>
      </div>
+    </div>
   )
 }
 

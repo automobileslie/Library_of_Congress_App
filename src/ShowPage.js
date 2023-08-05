@@ -7,7 +7,7 @@ export default function ShowPage(props) {
             <img className="show-page-image" src={props.collection.image_url} alt={props.collection.title + 'image'}/>
             <p className="show-page-description">{props.collection.description}</p>
             <div className="show-page-link">            
-                <a href={props.collection.url} target="_blank" rel="noreferrer">Go To Library of Congress Webpage</a>
+                <a className="highlighted-link" href={props.collection.url} alt="go to library of congress webpage" target="_blank" rel="noreferrer">Go To Library of Congress Webpage</a>
             </div>
             <div id="show-page-go-home-btn-container">
                 <NavigationButton clickHandler={() => props.handleBackToHomePageFromShow(props.currentPage)} buttonText="Go Back"/>
