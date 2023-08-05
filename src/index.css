@@ -29,17 +29,14 @@ code {
 }
 
 .app-container {
-  padding: 5%;  
-}
-
-#home-page-intro {
-  padding-right: 8%;
-  padding-left: 8%;
-  padding-top: 4%;
+ padding-right: 10%;
+ padding-left: 10%;
+ padding-top: 0%;
+ padding-bottom: 5%;
 }
 
 .inner-app-wrapper{
-  padding: 5%;
+  padding: 2%;
 }
 
 .show-page-header {
@@ -142,6 +139,12 @@ code {
   text-align: center;
 }
 
-.home-page-image-container{
-  text-align: center;
+.home-page-container {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
 }
+
+.home-page-intro {
+  padding-right: 5%;
+} 
