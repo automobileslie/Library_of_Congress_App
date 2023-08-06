@@ -68,8 +68,8 @@ a:active {
 
 @media only screen and (min-width: 992px) {
   .home-page-container {
-    padding-right: 15%;
-    padding-left: 15%
+    padding-right: 20%;
+    padding-left: 20%
   }  
 }
 
@@ -191,6 +191,27 @@ a:active {
 .show-page-container {
   display: flex;
   flex-direction: column;
+}
+
+@media only screen and (min-width: 992px) {
+  .show-page-container {
+    padding-right: 20%;
+    padding-left: 20%
+  }  
+}
+
+@media only screen and (max-width: 480px) and (min-width: 320px) {
+  .show-page-container {
+    padding-right: 0%;
+    padding-left: 0%
+  }  
+}
+
+@media only screen and (max-width: 992px) and (min-width: 481px) {
+  .show-page-container {
+    padding-right: 10%;
+    padding-left: 10%
+  }  
 }
 
 .show-page-header {
