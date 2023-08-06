@@ -12,13 +12,12 @@ export default function SearchBar(props) {
     function submitSearch(event){
         event.preventDefault();
         props.handleSearch(searchTerm)
-        setSearchTerm("")
     }
 
 
     return (
         <form onSubmit={submitSearch}>
-            <input type="text" name="searchTerm" value={props.searchTerm} placeholder="search" onChange={doingASearch}/>
+            <input type="text" name="searchTerm" value={searchTerm} placeholder="search" onChange={doingASearch}/>
              <button type="submit">
              <FontAwesomeIcon icon={faMagnifyingGlass}/>
              </button>

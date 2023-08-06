@@ -18,8 +18,8 @@ export default function App() {
   const [currentShowPage, setCurrentShowPage] = useState(null)
   const [loadingCollections, setLoadingCollections] = useState(true)
   const [showCollectionsPage, setShowCollectionsPage] = useState(false)
+  const [totalNumberOfResults, setTotalNumberOfResults] = useState(0)
 
-  const totalNumberOfResults = filteredResults.length
   const resultsToDisplay = filteredResults.slice(beginningDisplayResultsNumber, finalDisplayResultsNumber)
 
   useEffect(() => {
@@ -28,6 +28,7 @@ export default function App() {
       const collectionData = await axios.get('https://www.loc.gov/collections/?fo=json')
       setResults(collectionData.data.results)
       setFilteredResults(collectionData.data.results)
+      setTotalNumberOfResults(collectionData.data.results.length)
       setBeginningDisplayResultsNumber(0)
       setFinalDisplayResultsNumber(40)
       setCurrentPage(1)
@@ -42,6 +43,7 @@ export default function App() {
       const collectionData = await axios.get(url)
       setResults([...results, collectionData.data.results].flat())
       setFilteredResults([...results, collectionData.data.results].flat())
+      setTotalNumberOfResults([...results, collectionData.data.results].flat().length)
       setUrl(collectionData["data"]["pagination"]["next"])
 
       if (!collectionData["data"]["pagination"]["next"]) {
@@ -105,7 +107,12 @@ export default function App() {
 
     function goToFirstSetOfCollections() {
       setBeginningDisplayResultsNumber(0)
-      setFinalDisplayResultsNumber(40)
+      if (Math.floor(totalNumberOfResults/40) === currentPage || Math.floor(totalNumberOfResults/40) === 0) {
+        setFinalDisplayResultsNumber(totalNumberOfResults)
+      }
+      else {
+        setFinalDisplayResultsNumber(beginningDisplayResultsNumber + 40)
+      }
       setCurrentPage(1)
       setShowCollectionsPage(true)
     }
@@ -118,18 +125,24 @@ export default function App() {
     }
 
     function handleSearch(searchTerm) {
-      let filteredResults = results.filter(result => {
+      let searchResults = results.filter(result => {
         return result.title.toLowerCase().includes(searchTerm.toLowerCase())
       })
       setShowCollectionsPage(true)
-      setFilteredResults(filteredResults)
-      setPageLimit(Math.ceil(filteredResults.length/40))
+      setFilteredResults(searchResults)
+      setTotalNumberOfResults(searchResults.length)
+      setPageLimit(Math.ceil(searchResults.length/40))
       setCurrentPage(1)
       if (searchTerm === "") {
         goToFirstSetOfCollections()
       }
       setBeginningDisplayResultsNumber(0)
-      setFinalDisplayResultsNumber(40)
+      if (Math.floor(searchResults.length/40) === currentPage || Math.floor(searchResults.length/40) === 0) {
+        setFinalDisplayResultsNumber(searchResults.length)
+      }
+      else {
+        setFinalDisplayResultsNumber(beginningDisplayResultsNumber + 40)
+      }
     }
 
     function whichPageToRender() {
