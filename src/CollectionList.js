@@ -25,7 +25,7 @@ export default function CollectionList(props) {
             return <div>
                 <h2>List of Collections </h2>
                     <div className="collection-list-container">
-                        <SearchBar handleSearch={props.handleSearch}/>
+                        <SearchBar handleSearch={props.handleSearch} searchValue={props.searchValue}/>
                         { listOfCollections() }
                     </div>
                     <PaginationBar 

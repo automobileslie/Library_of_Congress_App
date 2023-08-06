@@ -111,24 +111,11 @@ export default function App() {
     }
     else {
       setFinalDisplayResultsNumber(40)
-    }
+    } 
   }
 
   function handleBackToCollectionFromShow() {
     setCurrentShowPage(null)
-    // clear the search filter if there was one in place before going back to the full list
-    setSearchValue("")
-    setFilteredResults(results)
-    goToFirstSetOfCollections()
-    setTotalNumberOfResults(results.length)
-    setBeginningDisplayResultsNumber(0)
-    setPageLimit(Math.ceil(results.length/40))
-    if (results.length % 40 !== 0 && Math.floor(results.length/40) === 0) {
-      setFinalDisplayResultsNumber(results.length)
-    }
-    else {
-      setFinalDisplayResultsNumber(40)
-    }
     navigate("/collection-list")
   }
 
@@ -205,6 +192,7 @@ export default function App() {
               finalDisplayResultsNumber={finalDisplayResultsNumber}
               handleBackToCollectionFromShow={handleBackToCollectionFromShow}
               errorMessage={errorMessage}
+              searchValue={searchValue}
             />}/>
             <Route path={`/collection-list?search=${searchValue}`} element={<CollectionList results={results} 
               resultsToDisplay={resultsToDisplay}
@@ -224,6 +212,7 @@ export default function App() {
               finalDisplayResultsNumber={finalDisplayResultsNumber}
               handleBackToCollectionFromShow={handleBackToCollectionFromShow}
               errorMessage={errorMessage}
+              searchValue={searchValue}
             />}/>
             <Route path={`/collection/${currentShowPage?.title}`} element={<ShowPage currentPage={currentPage} collection={currentShowPage} handleBackToCollectionFromShow={handleBackToCollectionFromShow}/>}/>
           </Routes>
