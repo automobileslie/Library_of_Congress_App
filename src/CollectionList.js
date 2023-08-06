@@ -31,6 +31,8 @@ export default function CollectionList(props) {
                 currentPage={props.currentPage}
                 pageLimit={props.pageLimit}
                 handleNextButtonClick={props.handleNextButtonClick}
+                onTheLastPage={props.finalDisplayResultsNumber === props.totalNumberOfResults}
+                onTheFirstPage={props.beginningDisplayResultsNumber === 0}
             />
             <p id="items-display-range">(Displaying items {props.beginningDisplayResultsNumber + 1} - {props.finalDisplayResultsNumber} of {props.totalNumberOfResults})</p>
         </div>

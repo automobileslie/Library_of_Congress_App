@@ -148,6 +148,12 @@ a:active {
   cursor: pointer;
 }
 
+.arrow-container-disabled {
+  cursor: default;
+  padding-right: .5%;
+  padding-left: .5%;
+}
+
 .right {
   transform: rotate(-45deg);
   -webkit-transform: rotate(-45deg);
@@ -172,6 +178,13 @@ a:active {
   padding: 3px;
 }
 
+.arrow-disabled {
+  border: solid lightgray;
+  border-width: 0 2px 2px 0;
+  display: inline-block;
+  padding: 3px;
+}
+
 .navigation-button:hover {
   color: #2a52be;
 }
@@ -182,6 +195,13 @@ a:active {
 
 .navigate-to-beginning-or-end:hover > i {
   border: solid #2a52be;
+  border-width: 0 2px 2px 0;
+  display: inline-block;
+  padding: 3px;
+}
+
+.navigate-to-beginning-or-end-disabled > i {
+  border: solid lightgrey;
   border-width: 0 2px 2px 0;
   display: inline-block;
   padding: 3px;
