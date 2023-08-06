@@ -2,9 +2,6 @@ import PaginationBar from './PaginationBar.js'
 import SearchBar from './SearchBar.js'
 
 export default function CollectionList(props) {
-    const finalNumberForListing = props.currentPage * 40
-    const beginningNumberForListing = finalNumberForListing - 39
-
     function collectionList() {    
         return props.resultsToDisplay?.map(result => {
             return <p className="collection-items" onClick={() => props.handleGoToShowPage(result)} key={result.title}>{result.title}</p>
@@ -31,7 +28,7 @@ export default function CollectionList(props) {
                 pageLimit={props.pageLimit}
                 handleNextButtonClick={props.handleNextButtonClick}
             />
-            <p id="items-display-range">(Displaying items {beginningNumberForListing} - {finalNumberForListing})</p>
+            <p id="items-display-range">(Displaying items {props.beginningDisplayResultsNumber + 1} - {props.finalDisplayResultsNumber} of {props.totalNumberOfResults})</p>
         </div>
     )
 }

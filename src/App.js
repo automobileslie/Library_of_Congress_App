@@ -8,11 +8,10 @@ import Home from './Home.js'
 import NavigationBar from './NavigationBar.js'
 
 export default function App() {
-
   const [results, setResults] = useState([])
   const [filteredResults, setFilteredResults] = useState([])
-  const [displayResultsNumber, setDisplayResultsNumber] = useState(0)
-  const resultsToDisplay = filteredResults.slice(displayResultsNumber - 40, displayResultsNumber)
+  const [beginningDisplayResultsNumber, setBeginningDisplayResultsNumber] = useState(0)
+  const [finalDisplayResultsNumber, setFinalDisplayResultsNumber] = useState(0)
   const [url, setUrl] = useState('https://www.loc.gov/collections/?fo=json')
   const [currentPage, setCurrentPage] = useState(0)
   const [pageLimit, setPageLimit] = useState(null)
@@ -20,13 +19,17 @@ export default function App() {
   const [loadingCollections, setLoadingCollections] = useState(true)
   const [showCollectionsPage, setShowCollectionsPage] = useState(false)
 
+  const totalNumberOfResults = filteredResults.length
+  const resultsToDisplay = filteredResults.slice(beginningDisplayResultsNumber, finalDisplayResultsNumber)
+
   useEffect(() => {
     // fetching collections data from the Library of Congress API
     const getCollections = async () => {
       const collectionData = await axios.get('https://www.loc.gov/collections/?fo=json')
       setResults(collectionData.data.results)
       setFilteredResults(collectionData.data.results)
-      setDisplayResultsNumber(40)
+      setBeginningDisplayResultsNumber(0)
+      setFinalDisplayResultsNumber(40)
       setCurrentPage(1)
       setUrl(collectionData["data"]["pagination"]["next"])
     }
@@ -56,15 +59,22 @@ export default function App() {
   function handleNextButtonClick() {
     // Take the user to the next page unless we are on the last page
     if (currentPage < pageLimit) {
+      setBeginningDisplayResultsNumber(beginningDisplayResultsNumber + 40)
+      if (Math.floor(totalNumberOfResults/40) === currentPage) {
+        setFinalDisplayResultsNumber(totalNumberOfResults)
+      }
+      else {
+        setFinalDisplayResultsNumber(finalDisplayResultsNumber + 40)
+      }
       setCurrentPage(currentPage + 1)
-      setDisplayResultsNumber(displayResultsNumber + 40)
     }  
   }
 
   function handleBackButtonClick() {
     // take the user to the previous page if not currently on the first page
     if(currentPage > 1) {
-      setDisplayResultsNumber(displayResultsNumber - 40)
+      setFinalDisplayResultsNumber(beginningDisplayResultsNumber - 1)
+      setBeginningDisplayResultsNumber(beginningDisplayResultsNumber - 40)
       setCurrentPage(currentPage - 1)
     } 
   }
@@ -78,7 +88,14 @@ export default function App() {
       setShowCollectionsPage(true)
       setCurrentShowPage(null)
       setCurrentPage(page)
-      setDisplayResultsNumber(40 * page)
+      setBeginningDisplayResultsNumber(40 * page)
+
+      if (Math.floor(totalNumberOfResults/40) === currentPage) {
+        setFinalDisplayResultsNumber(totalNumberOfResults)
+      }
+      else {
+        setFinalDisplayResultsNumber(beginningDisplayResultsNumber + 40)
+      }
     }
 
     function handleBackToHomePageFromCollection() {
@@ -87,13 +104,15 @@ export default function App() {
     }
 
     function goToFirstSetOfCollections() {
-      setDisplayResultsNumber(40)
+      setBeginningDisplayResultsNumber(0)
+      setFinalDisplayResultsNumber(40)
       setCurrentPage(1)
       setShowCollectionsPage(true)
     }
 
     function goToLastSetOfCollections() {
-      setDisplayResultsNumber(40 * pageLimit)
+      setBeginningDisplayResultsNumber(40 * (pageLimit - 1))
+      setFinalDisplayResultsNumber(totalNumberOfResults)
       setCurrentPage(pageLimit)
       setShowCollectionsPage(true)
     }
@@ -109,7 +128,8 @@ export default function App() {
       if (searchTerm === "") {
         goToFirstSetOfCollections()
       }
-      setDisplayResultsNumber(40)
+      setBeginningDisplayResultsNumber(0)
+      setFinalDisplayResultsNumber(40)
     }
 
     function whichPageToRender() {
@@ -117,6 +137,7 @@ export default function App() {
           return <CollectionList results={results} 
           resultsToDisplay={resultsToDisplay}
           filteredResults={filteredResults}
+          totalNumberOfResults= {totalNumberOfResults}
           pageLimit={pageLimit}
           handleNextButtonClick={handleNextButtonClick} 
           handleBackButtonClick={handleBackButtonClick} 
@@ -126,6 +147,8 @@ export default function App() {
           goToFirstSetOfCollections={goToFirstSetOfCollections}
           goToLastSetOfCollections={goToLastSetOfCollections}
           handleSearch={handleSearch}
+          beginningDisplayResultsNumber={beginningDisplayResultsNumber}
+          finalDisplayResultsNumber={finalDisplayResultsNumber}
         />
         }
         else if (currentShowPage) {
