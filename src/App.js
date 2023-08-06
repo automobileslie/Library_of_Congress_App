@@ -85,23 +85,14 @@ export default function App() {
     setShowCollectionsPage(false)
   }
 
-  function handleBackToHomePageFromShow(page) {
-    setShowCollectionsPage(true)
-    setCurrentShowPage(null)
-    setCurrentPage(page)
-    setBeginningDisplayResultsNumber(40 * page)
-
-    if (Math.floor(totalNumberOfResults/40) === currentPage) {
-      setFinalDisplayResultsNumber(totalNumberOfResults)
-    }
-    else {
-      setFinalDisplayResultsNumber(beginningDisplayResultsNumber + 40)
-    }
-  }
-
-  function handleBackToHomePageFromCollection() {
+  function handleBackToHomePage() {
     setCurrentShowPage(null)
     setShowCollectionsPage(false)
+  }
+
+  function handleBackToCollectionFromShow() {
+    setCurrentShowPage(null)
+    setShowCollectionsPage(true)
   }
 
   function goToFirstSetOfCollections() {
@@ -135,14 +126,15 @@ export default function App() {
     if (searchTerm === "") {
       goToFirstSetOfCollections()
     }
+    setBeginningDisplayResultsNumber(0)
+    if (Math.floor(searchResults.length/40) === currentPage && Math.floor(searchResults.length/40) === 0) {
+      setFinalDisplayResultsNumber(searchResults.length)
+    }
+    else if (Math.floor(searchResults.length/40) === 0 && searchTerm !== "") {
+      setFinalDisplayResultsNumber(searchResults.length)
+    }
     else {
-      setBeginningDisplayResultsNumber(0)
-      if (Math.floor(searchResults.length/40) === currentPage && Math.floor(searchResults.length/40) === 0) {
-        setFinalDisplayResultsNumber(searchResults.length)
-      }
-      else {
-        setFinalDisplayResultsNumber(beginningDisplayResultsNumber + 40)
-      }
+      setFinalDisplayResultsNumber(40)
     }
   }
 
@@ -166,7 +158,7 @@ export default function App() {
       />
       }
       else if (currentShowPage) {
-        return <ShowPage currentPage={currentPage} collection={currentShowPage} handleBackToHomePageFromShow={handleBackToHomePageFromShow}/>
+        return <ShowPage currentPage={currentPage} collection={currentShowPage} handleBackToCollectionFromShow={handleBackToCollectionFromShow}/>
       }
       else {
         return <Home />
@@ -175,7 +167,7 @@ export default function App() {
 
   return (
     <div>
-      <NavigationBar goToFirstSetOfCollections={goToFirstSetOfCollections} handleBackToHomePageFromCollection={handleBackToHomePageFromCollection}/>
+      <NavigationBar goToFirstSetOfCollections={goToFirstSetOfCollections} handleBackToHomePage={handleBackToHomePage}/>
       <div className="app-container">
         <div className="inner-app-wrapper">
           {whichPageToRender()}

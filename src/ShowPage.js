@@ -10,7 +10,7 @@ export default function ShowPage(props) {
                 <a className="highlighted-link" href={props.collection.url} alt="Library of Congress Page" target="_blank" rel="noreferrer">Library of Congress Page</a>
             </div>
             <div id="show-page-go-home-btn-container">
-                <NavigationButton clickHandler={() => props.handleBackToHomePageFromShow(props.currentPage)} buttonText="Go Back"/>
+                <NavigationButton clickHandler={props.handleBackToCollectionFromShow} buttonText="Go Back"/>
             </div>
         </div>
     )
