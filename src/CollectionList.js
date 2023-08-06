@@ -1,10 +1,14 @@
 import PaginationBar from './PaginationBar.js'
 import SearchBar from './SearchBar.js'
+import { NavLink } from 'react-router-dom';
 
 export default function CollectionList(props) {
     function collectionList() {    
         return props.resultsToDisplay?.map(result => {
-            return <p className="collection-items" onClick={() => props.handleGoToShowPage(result)} key={result.title}>{result.title}</p>
+            return <p className="collection-items" onClick={() => props.handleGoToShowPage(result)} key={result.title}>
+                        <NavLink to={`/collection/${result.title}`}>{result.title}</NavLink>
+                    </p>
+
         })
     }
 

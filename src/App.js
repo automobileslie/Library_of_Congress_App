@@ -6,6 +6,7 @@ import CollectionList from './CollectionList.js'
 import ShowPage from './ShowPage.js'
 import Home from './Home.js'
 import NavigationBar from './NavigationBar.js'
+import {Routes, Route, useNavigate} from 'react-router-dom'
 
 export default function App() {
   const [results, setResults] = useState([])
@@ -17,10 +18,11 @@ export default function App() {
   const [pageLimit, setPageLimit] = useState(null)
   const [currentShowPage, setCurrentShowPage] = useState(null)
   const [loadingCollections, setLoadingCollections] = useState(true)
-  const [showCollectionsPage, setShowCollectionsPage] = useState(false)
   const [totalNumberOfResults, setTotalNumberOfResults] = useState(0)
+  const [searchValue, setSearchValue] = useState("")
 
   const resultsToDisplay = filteredResults.slice(beginningDisplayResultsNumber, finalDisplayResultsNumber)
+  const navigate = useNavigate();
 
   useEffect(() => {
     // fetching the first set of collections data from the Library of Congress API
@@ -82,14 +84,13 @@ export default function App() {
 
   function handleGoToShowPage(collection) {
     setCurrentShowPage(collection)
-    setShowCollectionsPage(false)
   }
 
   function handleBackToHomePage() {
     setCurrentShowPage(null)
-    setShowCollectionsPage(false)
     // clear the search filter if there was one in place
     setFilteredResults(results)
+    setSearchValue("")
     setTotalNumberOfResults(results.length)
     setBeginningDisplayResultsNumber(0)
     setPageLimit(Math.ceil(results.length/40))
@@ -103,8 +104,8 @@ export default function App() {
 
   function handleBackToCollectionFromShow() {
     setCurrentShowPage(null)
-    setShowCollectionsPage(true)
     // clear the search filter if there was one in place before going back to the full list
+    setSearchValue("")
     setFilteredResults(results)
     goToFirstSetOfCollections()
     setTotalNumberOfResults(results.length)
@@ -116,6 +117,7 @@ export default function App() {
     else {
       setFinalDisplayResultsNumber(40)
     }
+    navigate("/collection-list")
   }
 
   function goToFirstSetOfCollections() {
@@ -127,21 +129,19 @@ export default function App() {
     else {
       setFinalDisplayResultsNumber(40)
     }
-    setShowCollectionsPage(true)
   }
 
   function goToLastSetOfCollections() {
     setBeginningDisplayResultsNumber(40 * (pageLimit - 1))
     setFinalDisplayResultsNumber(totalNumberOfResults)
     setCurrentPage(pageLimit)
-    setShowCollectionsPage(true)
   }
 
   function handleSearch(searchTerm) {
+    setSearchValue(searchTerm)
     let searchResults = results.filter(result => {
       return result.title.toLowerCase().includes(searchTerm.toLowerCase())
     })
-    setShowCollectionsPage(true)
     setFilteredResults(searchResults)
     setTotalNumberOfResults(searchResults.length)
     setPageLimit(Math.ceil(searchResults.length/40))
@@ -159,33 +159,13 @@ export default function App() {
     else {
       setFinalDisplayResultsNumber(40)
     }
-  }
 
-  function whichPageToRender() {
-    if (showCollectionsPage) {
-        return <CollectionList results={results} 
-        resultsToDisplay={resultsToDisplay}
-        filteredResults={filteredResults}
-        totalNumberOfResults= {totalNumberOfResults}
-        pageLimit={pageLimit}
-        handleNextButtonClick={handleNextButtonClick} 
-        handleBackButtonClick={handleBackButtonClick} 
-        currentPage={currentPage}
-        handleGoToShowPage={handleGoToShowPage}
-        loadingCollections={loadingCollections}
-        goToFirstSetOfCollections={goToFirstSetOfCollections}
-        goToLastSetOfCollections={goToLastSetOfCollections}
-        handleSearch={handleSearch}
-        beginningDisplayResultsNumber={beginningDisplayResultsNumber}
-        finalDisplayResultsNumber={finalDisplayResultsNumber}
-      />
-      }
-      else if (currentShowPage) {
-        return <ShowPage currentPage={currentPage} collection={currentShowPage} handleBackToCollectionFromShow={handleBackToCollectionFromShow}/>
-      }
-      else {
-        return <Home />
-      }
+    if (searchTerm === "") {
+      navigate("/collection-list")
+    }
+    else {
+      navigate(`/collection-list/?search=${searchTerm}`)
+    }
   }
 
   return (
@@ -193,7 +173,46 @@ export default function App() {
       <NavigationBar goToFirstSetOfCollections={goToFirstSetOfCollections} handleBackToHomePage={handleBackToHomePage}/>
       <div className="app-container">
         <div className="inner-app-wrapper">
-          {whichPageToRender()}
+          <Routes>
+            <Route path="/" element={<Home />}/>
+            <Route path="/collection-list" element={<CollectionList results={results} 
+              resultsToDisplay={resultsToDisplay}
+              filteredResults={filteredResults}
+              totalNumberOfResults= {totalNumberOfResults}
+              pageLimit={pageLimit}
+              handleNextButtonClick={handleNextButtonClick} 
+              handleBackButtonClick={handleBackButtonClick} 
+              currentPage={currentPage}
+              currentShowPage={currentShowPage}
+              handleGoToShowPage={handleGoToShowPage}
+              loadingCollections={loadingCollections}
+              goToFirstSetOfCollections={goToFirstSetOfCollections}
+              goToLastSetOfCollections={goToLastSetOfCollections}
+              handleSearch={handleSearch}
+              beginningDisplayResultsNumber={beginningDisplayResultsNumber}
+              finalDisplayResultsNumber={finalDisplayResultsNumber}
+              handleBackToCollectionFromShow={handleBackToCollectionFromShow}
+            />}/>
+            <Route path={`/collection-list?search=${searchValue}`} element={<CollectionList results={results} 
+              resultsToDisplay={resultsToDisplay}
+              filteredResults={filteredResults}
+              totalNumberOfResults= {totalNumberOfResults}
+              pageLimit={pageLimit}
+              handleNextButtonClick={handleNextButtonClick} 
+              handleBackButtonClick={handleBackButtonClick} 
+              currentPage={currentPage}
+              currentShowPage={currentShowPage}
+              handleGoToShowPage={handleGoToShowPage}
+              loadingCollections={loadingCollections}
+              goToFirstSetOfCollections={goToFirstSetOfCollections}
+              goToLastSetOfCollections={goToLastSetOfCollections}
+              handleSearch={handleSearch}
+              beginningDisplayResultsNumber={beginningDisplayResultsNumber}
+              finalDisplayResultsNumber={finalDisplayResultsNumber}
+              handleBackToCollectionFromShow={handleBackToCollectionFromShow}
+            />}/>
+            <Route path={`/collection/${currentShowPage?.title}`} element={<ShowPage currentPage={currentPage} collection={currentShowPage} handleBackToCollectionFromShow={handleBackToCollectionFromShow}/>}/>
+          </Routes>
         </div>
      </div>
     </div>
