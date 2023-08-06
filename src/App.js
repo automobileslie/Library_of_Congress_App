@@ -20,21 +20,28 @@ export default function App() {
   const [loadingCollections, setLoadingCollections] = useState(true)
   const [totalNumberOfResults, setTotalNumberOfResults] = useState(0)
   const [searchValue, setSearchValue] = useState("")
+  const [errorMessage, setErrorMessage] = useState(null)
 
-  const resultsToDisplay = filteredResults.slice(beginningDisplayResultsNumber, finalDisplayResultsNumber)
+  const resultsToDisplay = filteredResults?.slice(beginningDisplayResultsNumber, finalDisplayResultsNumber)
   const navigate = useNavigate();
 
   useEffect(() => {
     // fetching the first set of collections data from the Library of Congress API
     const getCollections = async () => {
-      const collectionData = await axios.get('https://www.loc.gov/collections/?fo=json')
-      setResults(collectionData.data.results)
-      setFilteredResults(collectionData.data.results)
-      setTotalNumberOfResults(collectionData.data.results.length)
-      setBeginningDisplayResultsNumber(0)
-      setFinalDisplayResultsNumber(40)
-      setCurrentPage(1)
-      setUrl(collectionData["data"]["pagination"]["next"])
+      try {
+        const collectionData = await axios.get('https://www.loc.gov/collections/?fo=json')
+          setResults(collectionData.data.results)
+          setFilteredResults(collectionData.data.results)
+          setTotalNumberOfResults(collectionData.data.results?.length)
+          setBeginningDisplayResultsNumber(0)
+          setFinalDisplayResultsNumber(40)
+          setCurrentPage(1)
+          setUrl(collectionData["data"]["pagination"]["next"])
+          setErrorMessage(null)
+      }
+      catch(error) {
+        setErrorMessage('Error loading the collection list.') 
+      }
     }
     getCollections()
   }, []) 
@@ -42,16 +49,21 @@ export default function App() {
   useEffect(() => {
     // fetch the remaining collections
     const getRemainingCollections = async () => {
-      const collectionData = await axios.get(url)
-      setResults([...results, collectionData.data.results].flat())
-      setFilteredResults([...results, collectionData.data.results].flat())
-      setTotalNumberOfResults([...results, collectionData.data.results].flat().length)
-      setUrl(collectionData["data"]["pagination"]["next"])
-
-      if (!collectionData["data"]["pagination"]["next"]) {
-        // if all pages have loaded, set the loading state to false and set the page limit
-        setPageLimit(Math.ceil(filteredResults.length/40) + 1)
-        setLoadingCollections(false)
+      try {
+        const collectionData = await axios.get(url)
+        setResults([...results, collectionData.data.results].flat())
+        setFilteredResults([...results, collectionData.data.results].flat())
+        setTotalNumberOfResults([...results, collectionData.data.results].flat().length)
+        setUrl(collectionData["data"]["pagination"]["next"])
+  
+        if (!collectionData["data"]["pagination"]["next"]) {
+          // if all pages have loaded, set the loading state to false and set the page limit
+          setPageLimit(Math.ceil(filteredResults.length/40) + 1)
+          setLoadingCollections(false)
+        }
+        setErrorMessage(null)
+      } catch (error) {
+        setErrorMessage('Error loading the collection list') 
       }
     }
     if (url) {
@@ -192,6 +204,7 @@ export default function App() {
               beginningDisplayResultsNumber={beginningDisplayResultsNumber}
               finalDisplayResultsNumber={finalDisplayResultsNumber}
               handleBackToCollectionFromShow={handleBackToCollectionFromShow}
+              errorMessage={errorMessage}
             />}/>
             <Route path={`/collection-list?search=${searchValue}`} element={<CollectionList results={results} 
               resultsToDisplay={resultsToDisplay}
@@ -210,6 +223,7 @@ export default function App() {
               beginningDisplayResultsNumber={beginningDisplayResultsNumber}
               finalDisplayResultsNumber={finalDisplayResultsNumber}
               handleBackToCollectionFromShow={handleBackToCollectionFromShow}
+              errorMessage={errorMessage}
             />}/>
             <Route path={`/collection/${currentShowPage?.title}`} element={<ShowPage currentPage={currentPage} collection={currentShowPage} handleBackToCollectionFromShow={handleBackToCollectionFromShow}/>}/>
           </Routes>

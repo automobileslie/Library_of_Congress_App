@@ -121,7 +121,7 @@ a:active {
   color: grey;
 }
 
-.loading-collections-message {
+.loading-or-error-collections-message{
   text-align: center;
 }
 
