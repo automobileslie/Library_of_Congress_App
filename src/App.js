@@ -100,12 +100,14 @@ export default function App() {
 
   function handleBackToHomePage() {
     setCurrentShowPage(null)
-    // clear the search filter if there was one in place
+    // clear the search filter if there was one in place 
+    // and set up users to land back on the full collection list if they return later to the collection list tab
     setFilteredResults(results)
     setSearchValue("")
     setTotalNumberOfResults(results.length)
     setBeginningDisplayResultsNumber(0)
     setPageLimit(Math.ceil(results.length/40))
+    // calculate the display numbers for determining how to paginate
     if (results.length % 40 !== 0 && Math.floor(results.length/40) === 0) {
       setFinalDisplayResultsNumber(results.length)
     }
@@ -121,6 +123,7 @@ export default function App() {
 
   function goToFirstSetOfCollections() {
     setCurrentPage(1)
+    // calculate the display numbers for determining how to paginate
     setBeginningDisplayResultsNumber(0)
     if (totalNumberOfResults % 40 !== 0 && Math.floor(totalNumberOfResults/40) === 0) {
       setFinalDisplayResultsNumber(totalNumberOfResults)
@@ -131,17 +134,21 @@ export default function App() {
   }
 
   function goToLastSetOfCollections() {
+    // calculate the display numbers for determining pagination
     setBeginningDisplayResultsNumber(40 * (pageLimit - 1))
     setFinalDisplayResultsNumber(totalNumberOfResults)
     setCurrentPage(pageLimit)
   }
 
   function handleSearch(searchTerm) {
+    // reset the filteredResults to take the search into account and pass that information down
     setSearchValue(searchTerm)
     let searchResults = results.filter(result => {
       return result.title.toLowerCase().includes(searchTerm.toLowerCase())
     })
     setFilteredResults(searchResults)
+
+    // do calculations for pagination purposes
     setTotalNumberOfResults(searchResults.length)
     setPageLimit(Math.ceil(searchResults.length/40))
     setCurrentPage(1)
@@ -159,6 +166,7 @@ export default function App() {
       setFinalDisplayResultsNumber(40)
     }
 
+    // if there is a search term, reflect that in the url; otherwise clear the old search term from the url, if there was one
     if (searchTerm === "") {
       navigate("/collection-list")
     }

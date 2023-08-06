@@ -13,14 +13,13 @@ export default function CollectionList(props) {
         })
     }
 
-    function displayForCollectionListPage() {
+    function determineDisplayForCollectionListPage() {
         if (props.loadingCollections) {
             return <div> <h1 className="loading-or-error-collections-message">Loading Collections</h1></div>
         }
         else if (props.errorMessage) {
             return <div> <h1 className="loading-or-error-collections-message">{props.errorMessage}</h1></div>
         }
-
         else {
             return <div>
                 <h2>List of Collections </h2>
@@ -45,5 +44,5 @@ export default function CollectionList(props) {
 
         }
 
-    return <>{displayForCollectionListPage()}</>
+    return <>{determineDisplayForCollectionListPage()}</>
 }

@@ -15,6 +15,10 @@ The site displays a paginated list of the collections available, and when a user
 
 I hope that you enjoy familiarizing yourself with the Library of Congress' Collections!
 
+IV. Video Demo of the Application
+
+https://www.loom.com/share/0a4500bfd7b34f33b6b1e088a0beada9?sid=9573f35b-fddd-4681-83f7-a7592ed28753
+
 
 
 
