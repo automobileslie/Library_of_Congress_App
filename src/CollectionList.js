@@ -17,12 +17,10 @@ export default function CollectionList(props) {
         </div>
         : 
         <div>
-            <h2>List of Collections</h2>
+            <h2>List of Collections </h2>
             <div className="collection-list-container">
                 { collectionList() }
-                <span id="items-display-range">(Displaying items {beginningNumberForListing} - {finalNumberForListing})</span>
             </div>
-
             <PaginationBar 
                 goToFirstSetOfCollections={props.goToFirstSetOfCollections} 
                 goToLastSetOfCollections={props.goToLastSetOfCollections}
@@ -31,6 +29,7 @@ export default function CollectionList(props) {
                 pageLimit={props.pageLimit}
                 handleNextButtonClick={props.handleNextButtonClick}
             />
+            <p id="items-display-range">(Displaying items {beginningNumberForListing} - {finalNumberForListing})</p>
         </div>
     )
 }

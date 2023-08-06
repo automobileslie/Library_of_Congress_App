@@ -66,8 +66,32 @@ a:active {
   flex-direction: column;
 }
 
+@media only screen and (min-width: 992px) {
+  .home-page-container {
+    padding-right: 15%;
+    padding-left: 15%
+  }  
+}
+
+@media only screen and (max-width: 480px) and (min-width: 320px) {
+  .home-page-container {
+    padding-right: 0%;
+    padding-left: 0%
+  }  
+}
+
+@media only screen and (max-width: 992px) and (min-width: 481px) {
+  .home-page-container {
+    padding-right: 10%;
+    padding-left: 10%
+  }  
+}
+
 .home-page-intro {
-  padding-right: 5%;
+  padding-left: 2%;
+  padding-right: 2%;
+  padding-bottom: 5%;
+  padding-top: 5%;
 } 
 
 .home-page-link {
@@ -84,7 +108,8 @@ a:active {
 }
 
 #items-display-range {
-  font-weight: bold;
+  text-align: center;
+  margin-top: 0;
 }
 
 .collection-items:hover {
