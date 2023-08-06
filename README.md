@@ -2,7 +2,7 @@ Library of Congress Collections Application
 
 I. What the Application Does
 
-This is an app that works with data from the Library of Congress' Collections API and displays a set of information in a readable and browsable format with the aim of generating interest in the library's resources. I was motivated to work with the library's API to better acquaint myself with all The Library of Congress has to offer, and I hope that going through my application benefits you in the same way!
+This is an app that works with data from the Library of Congress' Collections API and displays a set of information in a readable and browsable format with the aim of generating interest in the library's resources. I was motivated to work with this API to better acquaint myself with all The Library of Congress has to offer, and I hope that going through my application benefits you in the same way!
 
 II. How To Use It
 
@@ -12,7 +12,7 @@ III. How to Spin Up the App
 
 Pull the code down from the Github Repository, and then run `npm start` from the terminal once you are in the root directory in your code editor. Once the server is up, you should be able to see the application if you navigate to http://localhost:3000 in your browser.
 
-I hope that you enjoy browsing through the Library of Congress' Collections!
+I hope that you enjoy familiarizing yourself with the Library of Congress' Collections!
 
 
 
