@@ -1,4 +1,5 @@
 import PaginationBar from './PaginationBar.js'
+import SearchBar from './SearchBar.js'
 
 export default function CollectionList(props) {
     const finalNumberForListing = props.currentPage * 40
@@ -19,6 +20,7 @@ export default function CollectionList(props) {
         <div>
             <h2>List of Collections </h2>
             <div className="collection-list-container">
+                <SearchBar handleSearch={props.handleSearch}/>
                 { collectionList() }
             </div>
             <PaginationBar 

@@ -10,9 +10,9 @@ import NavigationBar from './NavigationBar.js'
 export default function App() {
 
   const [results, setResults] = useState([])
+  const [filteredResults, setFilteredResults] = useState([])
   const [displayResultsNumber, setDisplayResultsNumber] = useState(0)
-  const resultsToDisplay = results.slice(displayResultsNumber - 40, displayResultsNumber)
-  const [totalNumberOfResults, setTotalNumberOfResults] = useState(null)
+  const resultsToDisplay = filteredResults.slice(displayResultsNumber - 40, displayResultsNumber)
   const [url, setUrl] = useState('https://www.loc.gov/collections/?fo=json')
   const [currentPage, setCurrentPage] = useState(0)
   const [pageLimit, setPageLimit] = useState(null)
@@ -25,6 +25,7 @@ export default function App() {
     const getCollections = async () => {
       const collectionData = await axios.get('https://www.loc.gov/collections/?fo=json')
       setResults(collectionData.data.results)
+      setFilteredResults(collectionData.data.results)
       setDisplayResultsNumber(40)
       setCurrentPage(1)
       setUrl(collectionData["data"]["pagination"]["next"])
@@ -34,23 +35,23 @@ export default function App() {
   }, []) 
 
   useEffect(() => {
-    const getMoreCollections = async () => {
+    const getRemainingCollections = async () => {
       const collectionData = await axios.get(url)
       setResults([...results, collectionData.data.results].flat())
+      setFilteredResults([...results, collectionData.data.results].flat())
       setUrl(collectionData["data"]["pagination"]["next"])
 
       if (!collectionData["data"]["pagination"]["next"]) {
-        // if we have loaded all pages at this point, then store information to indicate that
-        setTotalNumberOfResults(results.length)
-        setPageLimit(Math.ceil(results.length/40) + 1)
+        // if all pages have loaded, set the loading state to false and set the page limit
+        setPageLimit(Math.ceil(filteredResults.length/40) + 1)
         setLoadingCollections(false)
       }
     }
     if (url) {
-      getMoreCollections()
+      getRemainingCollections()
     }
 
-  }, [results, url])
+  }, [results, filteredResults, url])
 
   function handleNextButtonClick() {
     // Take the user to the next page unless we are on the last page
@@ -97,11 +98,25 @@ export default function App() {
       setShowCollectionsPage(true)
     }
 
+    function handleSearch(searchTerm) {
+      let filteredResults = results.filter(result => {
+        return result.title.toLowerCase().includes(searchTerm.toLowerCase())
+      })
+      setShowCollectionsPage(true)
+      setFilteredResults(filteredResults)
+      setPageLimit(Math.ceil(filteredResults.length/40))
+      setCurrentPage(1)
+      if (searchTerm === "") {
+        goToFirstSetOfCollections()
+      }
+      setDisplayResultsNumber(40)
+    }
+
     function whichPageToRender() {
       if (showCollectionsPage) {
           return <CollectionList results={results} 
           resultsToDisplay={resultsToDisplay}
-          totalNumberOfResults={totalNumberOfResults} 
+          filteredResults={filteredResults}
           pageLimit={pageLimit}
           handleNextButtonClick={handleNextButtonClick} 
           handleBackButtonClick={handleBackButtonClick} 
@@ -110,6 +125,7 @@ export default function App() {
           loadingCollections={loadingCollections}
           goToFirstSetOfCollections={goToFirstSetOfCollections}
           goToLastSetOfCollections={goToLastSetOfCollections}
+          handleSearch={handleSearch}
         />
         }
         else if (currentShowPage) {
