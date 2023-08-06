@@ -1,4 +1,24 @@
-# Getting Started with Create React App
+Library of Congress Collections Application
+
+I. What the Application Does
+
+This is an app that works with data from the Library of Congress' Collections API and displays a set of information in a readable and browsable format with the aim of generating interest in the library's resources. I was motivated to work with the library's API to better acquaint myself with all The Library of Congress has to offer, and I hope that going through my application benefits you in the same way!
+
+II. How To Use It
+
+The site displays a paginated list of the collections available, and when a user clicks on a list item, it leads to a show page with an image related to the collection and a description of the collection provided by the library. From there, you can click on a link that leads to that collection's page on the Library of Congress' website or navigate back to the collection list using the back button. The list is searchable; if you type into the search bar and click the magnifying glass icon, the collection list will be narrowed based on matches with collection titles. If you clear the search, you get the full list back.
+
+III. How to Spin Up the App
+
+Pull the code down from the Github Repository, and then run `npm start` from the terminal once you are in the root directory in your code editor. Once the server is up, you should be able to see the application if you navigate to http://localhost:3000 in your browser.
+
+I hope that you enjoy browsing through the Library of Congress' Collections!
+
+
+
+
+
+<!-- # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
@@ -67,4 +87,4 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 
 ### `npm run build` fails to minify
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify) -->
