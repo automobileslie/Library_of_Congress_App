@@ -1,7 +1,6 @@
-import NavigationButton from './NavigationButton'
 
 export default function PaginationBar(props) {
-    console.log(props.onTheFirstPage, props.onTheLastPage)
+    let finalPageDisplayNumber = props.totalNumberOfResults ? props.pageLimit : 1
     return (
         <div className='pagination-bar-container'>
             <span onClick={props.goToFirstSetOfCollections} className={`arrow-container${props.onTheFirstPage ? "-disabled" : ""}`}>
@@ -14,8 +13,7 @@ export default function PaginationBar(props) {
                 <i onClick={props.handleBackButtonClick} className={`arrow${props.onTheFirstPage ? "-disabled" : ""} left`}></i>
             </span>
             <span className="page-count-wrapper">  
-                <span>Page {" " + props.currentPage + " "} of 
-                    <NavigationButton clickHandler={props.goToLastSetOfCollections} buttonText={" " + props.pageLimit}/>
+                <span>Page {" " + props.currentPage + " "} of {finalPageDisplayNumber}
                 </span>
             </span>
             <span className={`arrow-container${props.onTheLastPage ? "-disabled" : ""}`}>

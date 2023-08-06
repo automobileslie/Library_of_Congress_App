@@ -3,12 +3,13 @@ import SearchBar from './SearchBar.js'
 import { NavLink } from 'react-router-dom';
 
 export default function CollectionList(props) {
+    let displayItemStartNumber = props.totalNumberOfResults >= 1 ? props.beginningDisplayResultsNumber + 1 : props.beginningDisplayResultsNumber
+
     function collectionList() {    
         return props.resultsToDisplay?.map(result => {
             return <p className="collection-items" onClick={() => props.handleGoToShowPage(result)} key={result.title}>
                         <NavLink to={`/collection/${result.title}`}>{result.title}</NavLink>
                     </p>
-
         })
     }
 
@@ -33,8 +34,9 @@ export default function CollectionList(props) {
                 handleNextButtonClick={props.handleNextButtonClick}
                 onTheLastPage={props.finalDisplayResultsNumber === props.totalNumberOfResults}
                 onTheFirstPage={props.beginningDisplayResultsNumber === 0}
+                totalNumberOfResults={props.totalNumberOfResults}
             />
-            <p id="items-display-range">(Displaying items {props.beginningDisplayResultsNumber + 1} - {props.finalDisplayResultsNumber} of {props.totalNumberOfResults})</p>
+            <p id="items-display-range">(Displaying items {displayItemStartNumber} - {props.finalDisplayResultsNumber} of {props.totalNumberOfResults})</p>
         </div>
     )
 }
