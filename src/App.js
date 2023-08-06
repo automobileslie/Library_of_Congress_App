@@ -23,7 +23,7 @@ export default function App() {
   const resultsToDisplay = filteredResults.slice(beginningDisplayResultsNumber, finalDisplayResultsNumber)
 
   useEffect(() => {
-    // fetching collections data from the Library of Congress API
+    // fetching the first set of collections data from the Library of Congress API
     const getCollections = async () => {
       const collectionData = await axios.get('https://www.loc.gov/collections/?fo=json')
       setResults(collectionData.data.results)
@@ -34,11 +34,11 @@ export default function App() {
       setCurrentPage(1)
       setUrl(collectionData["data"]["pagination"]["next"])
     }
-
     getCollections()
   }, []) 
 
   useEffect(() => {
+    // fetch the remaining collections
     const getRemainingCollections = async () => {
       const collectionData = await axios.get(url)
       setResults([...results, collectionData.data.results].flat())
@@ -55,7 +55,6 @@ export default function App() {
     if (url) {
       getRemainingCollections()
     }
-
   }, [results, filteredResults, url])
 
   function handleNextButtonClick() {
@@ -75,102 +74,104 @@ export default function App() {
   function handleBackButtonClick() {
     // take the user to the previous page if not currently on the first page
     if(currentPage > 1) {
-      setFinalDisplayResultsNumber(beginningDisplayResultsNumber - 1)
+      setFinalDisplayResultsNumber(beginningDisplayResultsNumber)
       setBeginningDisplayResultsNumber(beginningDisplayResultsNumber - 40)
       setCurrentPage(currentPage - 1)
     } 
   }
 
-    function handleGoToShowPage(collection) {
-      setCurrentShowPage(collection)
-      setShowCollectionsPage(false)
-    }
+  function handleGoToShowPage(collection) {
+    setCurrentShowPage(collection)
+    setShowCollectionsPage(false)
+  }
 
-    function handleBackToHomePageFromShow(page) {
-      setShowCollectionsPage(true)
-      setCurrentShowPage(null)
-      setCurrentPage(page)
-      setBeginningDisplayResultsNumber(40 * page)
+  function handleBackToHomePageFromShow(page) {
+    setShowCollectionsPage(true)
+    setCurrentShowPage(null)
+    setCurrentPage(page)
+    setBeginningDisplayResultsNumber(40 * page)
 
-      if (Math.floor(totalNumberOfResults/40) === currentPage) {
-        setFinalDisplayResultsNumber(totalNumberOfResults)
-      }
-      else {
-        setFinalDisplayResultsNumber(beginningDisplayResultsNumber + 40)
-      }
-    }
-
-    function handleBackToHomePageFromCollection() {
-      setCurrentShowPage(null)
-      setShowCollectionsPage(false)
-    }
-
-    function goToFirstSetOfCollections() {
-      setBeginningDisplayResultsNumber(0)
-      if (Math.floor(totalNumberOfResults/40) === currentPage || Math.floor(totalNumberOfResults/40) === 0) {
-        setFinalDisplayResultsNumber(totalNumberOfResults)
-      }
-      else {
-        setFinalDisplayResultsNumber(beginningDisplayResultsNumber + 40)
-      }
-      setCurrentPage(1)
-      setShowCollectionsPage(true)
-    }
-
-    function goToLastSetOfCollections() {
-      setBeginningDisplayResultsNumber(40 * (pageLimit - 1))
+    if (Math.floor(totalNumberOfResults/40) === currentPage) {
       setFinalDisplayResultsNumber(totalNumberOfResults)
-      setCurrentPage(pageLimit)
-      setShowCollectionsPage(true)
     }
+    else {
+      setFinalDisplayResultsNumber(beginningDisplayResultsNumber + 40)
+    }
+  }
 
-    function handleSearch(searchTerm) {
-      let searchResults = results.filter(result => {
-        return result.title.toLowerCase().includes(searchTerm.toLowerCase())
-      })
-      setShowCollectionsPage(true)
-      setFilteredResults(searchResults)
-      setTotalNumberOfResults(searchResults.length)
-      setPageLimit(Math.ceil(searchResults.length/40))
-      setCurrentPage(1)
-      if (searchTerm === "") {
-        goToFirstSetOfCollections()
-      }
+  function handleBackToHomePageFromCollection() {
+    setCurrentShowPage(null)
+    setShowCollectionsPage(false)
+  }
+
+  function goToFirstSetOfCollections() {
+    setCurrentPage(1)
+    setBeginningDisplayResultsNumber(0)
+    if (totalNumberOfResults % 40 !== 0 && Math.floor(totalNumberOfResults/40) === 0) {
+      setFinalDisplayResultsNumber(totalNumberOfResults)
+    }
+    else {
+      setFinalDisplayResultsNumber(40)
+    }
+    setShowCollectionsPage(true)
+  }
+
+  function goToLastSetOfCollections() {
+    setBeginningDisplayResultsNumber(40 * (pageLimit - 1))
+    setFinalDisplayResultsNumber(totalNumberOfResults)
+    setCurrentPage(pageLimit)
+    setShowCollectionsPage(true)
+  }
+
+  function handleSearch(searchTerm) {
+    let searchResults = results.filter(result => {
+      return result.title.toLowerCase().includes(searchTerm.toLowerCase())
+    })
+    setShowCollectionsPage(true)
+    setFilteredResults(searchResults)
+    setTotalNumberOfResults(searchResults.length)
+    setPageLimit(Math.ceil(searchResults.length/40))
+    setCurrentPage(1)
+    if (searchTerm === "") {
+      goToFirstSetOfCollections()
+    }
+    else {
       setBeginningDisplayResultsNumber(0)
-      if (Math.floor(searchResults.length/40) === currentPage || Math.floor(searchResults.length/40) === 0) {
+      if (Math.floor(searchResults.length/40) === currentPage && Math.floor(searchResults.length/40) === 0) {
         setFinalDisplayResultsNumber(searchResults.length)
       }
       else {
         setFinalDisplayResultsNumber(beginningDisplayResultsNumber + 40)
       }
     }
+  }
 
-    function whichPageToRender() {
-      if (showCollectionsPage) {
-          return <CollectionList results={results} 
-          resultsToDisplay={resultsToDisplay}
-          filteredResults={filteredResults}
-          totalNumberOfResults= {totalNumberOfResults}
-          pageLimit={pageLimit}
-          handleNextButtonClick={handleNextButtonClick} 
-          handleBackButtonClick={handleBackButtonClick} 
-          currentPage={currentPage}
-          handleGoToShowPage={handleGoToShowPage}
-          loadingCollections={loadingCollections}
-          goToFirstSetOfCollections={goToFirstSetOfCollections}
-          goToLastSetOfCollections={goToLastSetOfCollections}
-          handleSearch={handleSearch}
-          beginningDisplayResultsNumber={beginningDisplayResultsNumber}
-          finalDisplayResultsNumber={finalDisplayResultsNumber}
-        />
-        }
-        else if (currentShowPage) {
-          return <ShowPage currentPage={currentPage} collection={currentShowPage} handleBackToHomePageFromShow={handleBackToHomePageFromShow}/>
-        }
-        else {
-          return <Home />
-        }
+  function whichPageToRender() {
+    if (showCollectionsPage) {
+        return <CollectionList results={results} 
+        resultsToDisplay={resultsToDisplay}
+        filteredResults={filteredResults}
+        totalNumberOfResults= {totalNumberOfResults}
+        pageLimit={pageLimit}
+        handleNextButtonClick={handleNextButtonClick} 
+        handleBackButtonClick={handleBackButtonClick} 
+        currentPage={currentPage}
+        handleGoToShowPage={handleGoToShowPage}
+        loadingCollections={loadingCollections}
+        goToFirstSetOfCollections={goToFirstSetOfCollections}
+        goToLastSetOfCollections={goToLastSetOfCollections}
+        handleSearch={handleSearch}
+        beginningDisplayResultsNumber={beginningDisplayResultsNumber}
+        finalDisplayResultsNumber={finalDisplayResultsNumber}
+      />
       }
+      else if (currentShowPage) {
+        return <ShowPage currentPage={currentPage} collection={currentShowPage} handleBackToHomePageFromShow={handleBackToHomePageFromShow}/>
+      }
+      else {
+        return <Home />
+      }
+  }
 
   return (
     <div>
