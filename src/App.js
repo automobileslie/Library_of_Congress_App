@@ -88,11 +88,34 @@ export default function App() {
   function handleBackToHomePage() {
     setCurrentShowPage(null)
     setShowCollectionsPage(false)
+    // clear the search filter if there was one in place
+    setFilteredResults(results)
+    setTotalNumberOfResults(results.length)
+    setBeginningDisplayResultsNumber(0)
+    setPageLimit(Math.ceil(results.length/40))
+    if (results.length % 40 !== 0 && Math.floor(results.length/40) === 0) {
+      setFinalDisplayResultsNumber(results.length)
+    }
+    else {
+      setFinalDisplayResultsNumber(40)
+    }
   }
 
   function handleBackToCollectionFromShow() {
     setCurrentShowPage(null)
     setShowCollectionsPage(true)
+    // clear the search filter if there was one in place before going back to the full list
+    setFilteredResults(results)
+    goToFirstSetOfCollections()
+    setTotalNumberOfResults(results.length)
+    setBeginningDisplayResultsNumber(0)
+    setPageLimit(Math.ceil(results.length/40))
+    if (results.length % 40 !== 0 && Math.floor(results.length/40) === 0) {
+      setFinalDisplayResultsNumber(results.length)
+    }
+    else {
+      setFinalDisplayResultsNumber(40)
+    }
   }
 
   function goToFirstSetOfCollections() {
