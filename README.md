@@ -25,7 +25,7 @@ I used a React front-end framework for this application because of the ease of w
 
 As it currently is, this fully functions as a front-end application, but to improve functionality in the future and extend the uses of the app, I would add a back-end framework such as Ruby on Rails. If there was a back-end, I would make the fetches to the API through a controller and would also improve current routing to better manage the display of index and show pages.
 
-The maintainability and scalabilty of the code could be improved by writing unit and integration tests and by incorporporating the reducer hook to replace the reliance on passing down props.
+The maintainability and scalabilty of the code could be improved by writing unit and integration tests and by incorporporating React's reducer hook to replace the reliance on passing down props.
 
 It works as a small-scale app for demo purposes as is, but that is an indication of the direction I could take if I continued to build up the application! Thank you for exploring the work I did on this Library of Congress application!
 
