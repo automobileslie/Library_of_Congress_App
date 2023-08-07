@@ -21,7 +21,7 @@ https://www.loom.com/share/0a4500bfd7b34f33b6b1e088a0beada9?sid=9573f35b-fddd-46
 
 V. Notes on the Technology Used and Potential Future Modifications
 
-I used a React front-end framework for this application because of the ease of writing JavaScript with JSX and because of the benefits of other tools that come with it, for example hooks that help with state management and methods for handling lifecycle events. 
+I used a React front-end framework for this application because of the ease of writing JavaScript with JSX and because of the benefits of other tools that come with it, for example hooks that help with state management and methods that handle lifecycle events. 
 
 As it currently is, this fully functions as a front-end application, but to improve performance in the future and extend the uses of the app, I would add a back-end framework such as Ruby on Rails. If there was a back-end, I would make the fetches to the API through a controller and would also improve current routing to better manage the display of index and show pages.
 
