@@ -27,9 +27,7 @@ As it currently is, this fully functions as a front-end application, but to impr
 
 The maintainability and scalabilty of the code could be improved by writing unit and integration tests and by incorporporating the reducer hook to replace the reliance on passing down props.
 
-It works as a small-scale app for demo purposes as is, but that is an indication of the direction I could take if I continued to build up the application! 
-
-Thank you for exploring the work I did on this Library of Congress application!
+It works as a small-scale app for demo purposes as is, but that is an indication of the direction I could take if I continued to build up the application! Thank you for exploring the work I did on this Library of Congress application!
 
 
 
