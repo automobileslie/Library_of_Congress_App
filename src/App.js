@@ -6,7 +6,7 @@ import CollectionList from './CollectionList.js'
 import ShowPage from './ShowPage.js'
 import Home from './Home.js'
 import NavigationBar from './NavigationBar.js'
-import {Routes, Route, useNavigate} from 'react-router-dom'
+import {Routes, Route, useNavigate, useLocation} from 'react-router-dom'
 
 export default function App() {
   const [results, setResults] = useState([])
@@ -24,6 +24,7 @@ export default function App() {
 
   const resultsToDisplay = filteredResults?.slice(beginningDisplayResultsNumber, finalDisplayResultsNumber)
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     // fetching the first set of collections data from the Library of Congress API
@@ -62,14 +63,15 @@ export default function App() {
           setLoadingCollections(false)
         }
 
-        // Below is a workaround for routing purposes, as a backend is not yet hooked up to handle this.
-        // I am checking for whether there is a show page title in local storage.
-        // If that is the case, it means that the user refreshed the page while on the show page,
-        // and this makes sure the show page is not lost if that happens.
-        let currentShowPageTitle = localStorage.getItem('currentShowPageTitle')
-        if(currentShowPageTitle) {
+        // Below is a workaround for routing purposes, as a backend is not yet hooked up to handle routes for showpages
+        let decodedPathNameArray = decodeURI(location.pathname).split('/')
+        let collectionName
+        if (decodedPathNameArray.length === 3) {
+            collectionName = decodedPathNameArray[2]
+        }
+        if(collectionName) {
           let collectionForShowPage = [...results, collectionData.data.results].flat().find(result => {
-            return result.title === currentShowPageTitle
+            return result.title === collectionName
           })
           setCurrentShowPage(collectionForShowPage)
         }
@@ -82,7 +84,7 @@ export default function App() {
     if (url) {
       getRemainingCollections()
     }
-  }, [results, filteredResults, url])
+  }, [results, filteredResults, url, location])
 
   function handleNextButtonClick() {
     // Take the user to the next page unless we are on the last page
@@ -109,13 +111,11 @@ export default function App() {
 
   function handleGoToShowPage(collection) {
     setCurrentShowPage(collection)
-    localStorage.removeItem('currentShowPageTitle')
-    localStorage.setItem('currentShowPageTitle', collection.title)
+
   }
 
   function handleBackToHomePage() {
     setCurrentShowPage(null)
-    localStorage.removeItem('currentShowPageTitle')
     // clear the search filter if there was one in place 
     // and set up users to land back on the full collection list if they return later to the collection list tab
     setFilteredResults(results)
@@ -134,7 +134,6 @@ export default function App() {
 
   function handleBackToCollectionFromShow() {
     setCurrentShowPage(null)
-    localStorage.removeItem('currentShowPageTitle')
     navigate("/collection-list")
   }
 
