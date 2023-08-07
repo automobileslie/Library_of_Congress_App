@@ -63,7 +63,7 @@ export default function App() {
           setLoadingCollections(false)
         }
 
-        // Below is a workaround for routing purposes, as a backend is not yet hooked up to handle routes for showpages
+        // Below is a workaround for routing purposes, as a backend is not yet hooked up to handle routes for show pages
         let decodedPathNameArray = decodeURI(location.pathname).split('/')
         let collectionName
         if (decodedPathNameArray.length === 3) {
