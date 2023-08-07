@@ -198,7 +198,7 @@ export default function App() {
       <div className="app-container">
         <div className="inner-app-wrapper">
           <Routes>
-            <Route path="/" element={<Home />}/>
+            <Route path="/" element={<Home errorMessage={errorMessage}/>}/>
             <Route path="/collection-list" element={<CollectionList results={results} 
               resultsToDisplay={resultsToDisplay}
               filteredResults={filteredResults}
@@ -239,7 +239,7 @@ export default function App() {
               errorMessage={errorMessage}
               searchValue={searchValue}
             />}/>
-            <Route path={`/collection/${currentShowPage?.title}`} element={<ShowPage collection={currentShowPage} handleBackToCollectionFromShow={handleBackToCollectionFromShow}/>}/>
+            <Route path={`/collection/${currentShowPage?.title}`} element={<ShowPage collection={currentShowPage} handleBackToCollectionFromShow={handleBackToCollectionFromShow} errorMessage={errorMessage}/>}/>
           </Routes>
         </div>
      </div>

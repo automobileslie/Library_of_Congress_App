@@ -1,24 +1,25 @@
 import PaginationBar from './PaginationBar.js'
 import SearchBar from './SearchBar.js'
 import { NavLink } from 'react-router-dom';
+import ErrorMessage from './ErrorMessage.js'
 
 export default function CollectionList(props) {
     let displayItemStartNumber = props.totalNumberOfResults >= 1 ? props.beginningDisplayResultsNumber + 1 : props.beginningDisplayResultsNumber
 
     function listOfCollections() {    
         return props.resultsToDisplay?.map(result => {
-            return <p className="collection-items" onClick={() => props.handleGoToShowPage(result)} key={result.title}>
-                        <NavLink to={`/collection/${result.title}`}>{result.title}</NavLink>
+            return <p className="collection-items" onClick={() => props.handleGoToShowPage(result)} key={result?.title}>
+                        <NavLink to={`/collection/${result?.title}`}>{result?.title}</NavLink>
                     </p>
         })
     }
 
     function determineDisplayForCollectionListPage() {
         if (props.loadingCollections) {
-            return <div> <h1 className="loading-or-error-collections-message">Loading Collections</h1></div>
+            return <div> <h2 className="loading-or-error-collections-message">Loading Collections</h2></div>
         }
         else if (props.errorMessage) {
-            return <div> <h1 className="loading-or-error-collections-message">{props.errorMessage}</h1></div>
+            return <ErrorMessage errorMessage={props.errorMessage}></ErrorMessage>
         }
         else {
             return <div>

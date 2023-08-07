@@ -1,7 +1,11 @@
 import NavigationButton from './NavigationButton.js'
+import ErrorMessage from './ErrorMessage.js'
 
 export default function ShowPage(props) {
     return (
+        props.errorMessage ?
+            <ErrorMessage errorMessage={props.errorMessage}></ErrorMessage>
+        :
         <div className="show-page-container">
             <h1 className="show-page-header">{props.collection.title}</h1>
             <img className="show-page-image" src={props.collection.image_url} alt={props.collection.title + 'image'}/>
