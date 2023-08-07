@@ -2,7 +2,7 @@ Library of Congress Collections Application
 
 I. What the Application Does
 
-This is an app that works with data from the Library of Congress' Collections API and displays a set of information in a readable and browsable format with the aim of generating interest in the library's resources. I was motivated to work with this API to better acquaint myself with all The Library of Congress has to offer, and I hope that using my application benefits you in the same way!
+This is a single-page application that works with data from the Library of Congress' Collections API and displays a set of information in a readable and browsable format with the aim of generating interest in the library's resources. I was motivated to work with this API to better acquaint myself with all The Library of Congress has to offer, and I hope that using my application benefits you in the same way!
 
 II. How to Spin Up the App
 
