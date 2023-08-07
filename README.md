@@ -2,7 +2,7 @@ Library of Congress Collections Application
 
 I. What the Application Does
 
-This is an app that works with data from the Library of Congress' Collections API and displays a set of information in a readable and browsable format with the aim of generating interest in the library's resources. I was motivated to work with this API to better acquaint myself with all The Library of Congress has to offer, and I hope that going through my application benefits you in the same way!
+This is an app that works with data from the Library of Congress' Collections API and displays a set of information in a readable and browsable format with the aim of generating interest in the library's resources. I was motivated to work with this API to better acquaint myself with all The Library of Congress has to offer, and I hope that using my application benefits you in the same way!
 
 II. How to Spin Up the App
 
@@ -11,13 +11,25 @@ Pull the code down from the Github Repository, and then run `npm start` from the
 
 III. How To Use It
 
-The site displays a paginated list of the collections available, and when a user clicks on a list item, it leads to a show page with an image related to the collection and a description of the collection provided by the library. From there, you can click on a link that leads to that collection's page on the Library of Congress' website or can navigate back to the collection list using the back button. The list is searchable; if you type into the search bar and click the magnifying glass icon, the collection list will be narrowed based on matches with collection titles. If you clear the search, you get the full list back.
+The site displays a paginated list of the collections available. When a user clicks on a list item, it leads to a show page with an image related to the collection and a description of the collection provided by the library. From there, you can click on a link that leads to that collection's page on the Library of Congress' website or can navigate back to the collection list using the back button. The list is searchable; if you type into the search bar and click the magnifying glass icon, the collection list will be narrowed based on matches with collection titles. If you clear the search, you get the full list back.
 
 I hope that you enjoy familiarizing yourself with the Library of Congress' Collections!
 
 IV. Video Demo of the Application
 
 https://www.loom.com/share/0a4500bfd7b34f33b6b1e088a0beada9?sid=9573f35b-fddd-4681-83f7-a7592ed28753
+
+V. Notes on the Technology Used and Potential Future Modifications
+
+I used a React front-end framework for this application because of the ease of writing JavaScript with JSX and because of the benefits of other tools that come with it, for example hooks that help to handle state management and methods for handling lifecycle events. 
+
+As it currently is, this fully functions as a front-end application, but to improve functionality in the future and extend the uses of the app, I would add a back-end framework such as Ruby on Rails. If there was a back-end, I would make the fetches to the API through a controller and would also improve current routing to better manage the display of index and show pages.
+
+The maintainability and scalabilty of the code could be improved by writing unit and integration tests and by incorporporating the reducer hook to replace the reliance on passing down props.
+
+It works as a small-scale app for demo purposes as is, but that is an indication of the direction I could take if I continued to build up the application! 
+
+Thank you for exploring the work I did on this Library of Congress application!
 
 
 
