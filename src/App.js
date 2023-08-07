@@ -57,10 +57,23 @@ export default function App() {
         setUrl(collectionData["data"]["pagination"]["next"])
   
         if (!collectionData["data"]["pagination"]["next"]) {
-          // if all pages have loaded, set the loading state to false and set the page limit
+          // if all pages have loaded, set the loading state to false and set the page count
           setPageLimit(Math.ceil(filteredResults.length/40) + 1)
           setLoadingCollections(false)
         }
+
+        // Below is a workaround for routing purposes, as a backend is not yet hooked up to handle this.
+        // I am checking for whether there is a show page title in local storage.
+        // If that is the case, it means that the user refreshed the page while on the show page,
+        // and this makes sure the show page is not lost if that happens.
+        let currentShowPageTitle = localStorage.getItem('currentShowPageTitle')
+        if(currentShowPageTitle) {
+          let collectionForShowPage = [...results, collectionData.data.results].flat().find(result => {
+            return result.title === currentShowPageTitle
+          })
+          setCurrentShowPage(collectionForShowPage)
+        }
+
         setErrorMessage(null)
       } catch (error) {
         setErrorMessage('Error loading the collection list') 
@@ -96,10 +109,13 @@ export default function App() {
 
   function handleGoToShowPage(collection) {
     setCurrentShowPage(collection)
+    localStorage.removeItem('currentShowPageTitle')
+    localStorage.setItem('currentShowPageTitle', collection.title)
   }
 
   function handleBackToHomePage() {
     setCurrentShowPage(null)
+    localStorage.removeItem('currentShowPageTitle')
     // clear the search filter if there was one in place 
     // and set up users to land back on the full collection list if they return later to the collection list tab
     setFilteredResults(results)
@@ -118,6 +134,7 @@ export default function App() {
 
   function handleBackToCollectionFromShow() {
     setCurrentShowPage(null)
+    localStorage.removeItem('currentShowPageTitle')
     navigate("/collection-list")
   }
 
@@ -222,7 +239,7 @@ export default function App() {
               errorMessage={errorMessage}
               searchValue={searchValue}
             />}/>
-            <Route path={`/collection/${currentShowPage?.title}`} element={<ShowPage currentPage={currentPage} collection={currentShowPage} handleBackToCollectionFromShow={handleBackToCollectionFromShow}/>}/>
+            <Route path={`/collection/${currentShowPage?.title}`} element={<ShowPage collection={currentShowPage} handleBackToCollectionFromShow={handleBackToCollectionFromShow}/>}/>
           </Routes>
         </div>
      </div>
