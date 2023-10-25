@@ -11,9 +11,9 @@ Pull the code down from the Github Repository, and then run `npm start` from the
 
 III. How To Use It
 
-The site displays a paginated list of the collections available. When a user clicks on a list item, it leads to a show page with an image related to the collection and a description of the collection provided by the library. From there, you can click on a link that leads to that collection's page on the Library of Congress' website or can navigate back to the collection list using the back button. The list is searchable; if you type into the search bar and click the magnifying glass icon, the collection list will be narrowed based on matches with collection titles. If you clear the search, you get the full list back.
+The site displays a paginated list of the collections available. When a user clicks on a list item, it leads to a show page with an image related to the collection and a description of the collection provided by the library. From there, you can click on a link that leads to that collection's page on the Library of Congress's website or can navigate back to the collection list using the back button. The list is searchable; if you type into the search bar and click the magnifying glass icon, the collection list will be narrowed based on matches with collection titles. If you clear the search, you get the full list back.
 
-I hope that you enjoy familiarizing yourself with the Library of Congress' Collections!
+I hope that you enjoy familiarizing yourself with the Library of Congress's Collections!
 
 IV. Video Demo of the Application
 
